@@ -1,4 +1,5 @@
 # the previous site, kept locally only
 archive/
 .vercel
+.env*
 .DS_Store

@@ -311,4 +311,27 @@ for (const [name, text] of Object.entries(parts)) {
   html = html.replace(re, (_, a, b) => `${a}\n${text}\n${b}`);
 }
 writeFileSync(page, html);
+
+/* the card shown when the link is shared, 1200 x 630. To refresh media/og.png after a change:
+   chrome --headless --hide-scrollbars --window-size=1200,630 --screenshot=media/og.png tools/og-card.html */
+writeFileSync(join(ROOT, 'tools', 'og-card.html'), `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Askeo Labs: share card</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400..600;1,400..600&family=Martian+Mono:wdth,wght@75..112.5,300..500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<style>
+html, body { width: 1200px; height: 630px; overflow: hidden; }
+.card { position: relative; width: 1200px; height: 630px; padding: 62px 0 0 72px; }
+.card .logo { height: 30px; }
+.card h1 { font-size: 55px; line-height: 1.03; max-width: 9.4em; margin-top: 84px; }
+.card .eyebrow { position: absolute; left: 72px; bottom: 58px; margin: 0; font-size: 12px; }
+.card .fig { position: absolute; right: 30px; top: 92px; width: 610px; }
+.card .fig text { font-size: 11.5px; }
+</style></head>
+<body><div class="card">
+<svg class="logo" viewBox="${LOGO_BOX}">${logoBody('logo', 'currentColor', `fill="${RED}"`)}</svg>
+<h1>The environment where agents run physical experiments and train robots, <em>on their own.</em></h1>
+<p class="eyebrow">From photographs to a 3D environment with physics</p>
+${parts['fig-c']}
+</div></body></html>
+`);
 console.log('wrote', Object.keys(parts).join(', '), 'into index.html and', Object.keys(media).length, 'files into media/');
